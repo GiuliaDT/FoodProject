@@ -4,6 +4,8 @@ import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Product from '../components/Product';
+import LoadSpinner from '../components/LoadSpinner';
+import ErrorBox from '../components/ErrorBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -24,6 +26,7 @@ function Home() {
     loading: true,
     error: '',
   });
+
   // const [products, setProducts] = useState([]);
   useEffect(() => {
     const getData = async () => {
@@ -31,25 +34,32 @@ function Home() {
       try {
         const res = await axios.get('/api/products');
         dispatch({ type: 'FETCH_SUCCESS', payload: res.data });
-      } catch (error) {
-        dispatch({ type: 'FETCH_FAILED', payload: error.message });
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
 
-      //setProducts(res.data);
+      // setProducts(result.data);
     };
     getData();
   }, []);
+
   return (
     <div>
       <h1> Best Seller</h1>
       <div className="products">
-        <Row>
-          {products.map((product) => (
-            <Col sm={6} md={4} lg={3} className="mb-3">
-              <Product product={product}></Product>
-            </Col>
-          ))}
-        </Row>
+        {loading ? (
+          <LoadSpinner />
+        ) : error ? (
+          <ErrorBox variant="danger">{error}</ErrorBox>
+        ) : (
+          <Row>
+            {products.map((product) => (
+              <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+                <Product product={product}></Product>
+              </Col>
+            ))}
+          </Row>
+        )}
       </div>
     </div>
   );

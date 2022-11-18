@@ -29,3 +29,8 @@ body {
 .product-info {
   padding: 16px;
 }
+.img-small {
+  max-width: 500px;
+  max-height: 500px;
+  border-radius: 10px;
+}
