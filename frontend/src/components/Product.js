@@ -14,7 +14,18 @@ function Product(props) {
         <Link to={`/product/${product.slug}`}>
           <Card.Title> {product.name} </Card.Title>
         </Link>
-        <Card.Text> {product.price} </Card.Text>
+        <Card.Text>
+          <i class="fa-solid fa-tag"></i> {product.price}{' '}
+        </Card.Text>
+        <Card.Text>
+          {' '}
+          <i class="fa-sharp fa-solid fa-location-dot"></i>
+          {product.origin}{' '}
+        </Card.Text>
+        <Card.Text>
+          <i class="fa-solid fa-utensils"></i>
+          {product.occasion}
+        </Card.Text>
       </Card.Body>
       <Button>Add to Cart</Button>
     </Card>

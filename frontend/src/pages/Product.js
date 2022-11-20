@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useReducer, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
@@ -9,7 +9,7 @@ import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import LoadSpinner from '../components/LoadSpinner';
-import ErrorBox from '../components/ErrorBox';
+import ErrorBox from '../components/Alert';
 import { getError } from '../utils';
 import { Store } from '../Store';
 
@@ -29,6 +29,7 @@ const reducer = (state, action) => {
 function Product() {
   const params = useParams();
   const { slug } = params;
+  const navigate = useNavigate;
 
   const [{ loading, error, product }, dispatch] = useReducer(reducer, {
     product: [],
@@ -63,6 +64,7 @@ function Product() {
       type: 'CART_ADD_ITEM',
       payload: { ...product, qnty },
     });
+    navigate('/cart');
   };
 
   return loading ? (

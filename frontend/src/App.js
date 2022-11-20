@@ -10,6 +10,7 @@ import Nav from 'react-bootstrap/Nav';
 import Badge from 'react-bootstrap/Badge';
 import { Store } from './Store';
 import { useContext } from 'react';
+import Cart from './pages/Cart';
 
 function App() {
   const { state } = useContext(Store);
@@ -25,7 +26,7 @@ function App() {
               </LinkContainer>
               <Nav className="me-auto">
                 <Link to="/cart" className="nav-link">
-                  Your Cart
+                  <i class="fa-solid fa-cart-shopping"></i>
                   {cart.cartItems.length > 0 && (
                     <Badge pill bg="success">
                       {cart.cartItems.reduce((a, c) => a + c.qnty, 0)}
@@ -40,6 +41,7 @@ function App() {
           <Container className="mt-3">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/cart" element={<Cart />} />
               <Route path="/product/:slug" element={<Product />} />
             </Routes>
           </Container>

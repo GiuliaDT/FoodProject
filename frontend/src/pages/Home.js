@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Product from '../components/Product';
 import LoadSpinner from '../components/LoadSpinner';
-import ErrorBox from '../components/ErrorBox';
+import ErrorBox from '../components/Alert';
 
 const reducer = (state, action) => {
   switch (action.type) {

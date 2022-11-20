@@ -34,3 +34,7 @@ body {
   max-height: 500px;
   border-radius: 10px;
 }
+
+.img-thumbnail {
+  height: 90px;
+}
