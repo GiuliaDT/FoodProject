@@ -50,18 +50,18 @@ function Product() {
 
   const { state, dispatch: newDispatch } = useContext(Store);
   const { cart } = state;
-  const addProducts = async () => {
-    const oldItem = cart.cartItems.find((prod) => prod._id === product._id);
-    const quantity = oldItem ? oldItem.quantity + 1 : 1;
+
+  const addToCartHandler = async () => {
+    const addedProduct = cart.cartItems.find((x) => x._id === product._id);
+    const qnty = addedProduct ? addedProduct.qnty + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
-    if (data.stock < quantity) {
-      window.alert('Product is temporarily out of stock.');
+    if (data.stock < qnty) {
+      window.alert('Product temporarily out of stock');
       return;
     }
-
     newDispatch({
-      type: 'ADD_ITEMS',
-      payload: { ...product, quantity },
+      type: 'CART_ADD_ITEM',
+      payload: { ...product, qnty },
     });
   };
 
@@ -120,7 +120,7 @@ function Product() {
                 {product.stock > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
-                      <Button onClick={addProducts} variant="primary">
+                      <Button onClick={addToCartHandler} variant="primary">
                         Add to Cart
                       </Button>
                     </div>

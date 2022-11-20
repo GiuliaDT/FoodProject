@@ -28,7 +28,7 @@ function App() {
                   Your Cart
                   {cart.cartItems.length > 0 && (
                     <Badge pill bg="success">
-                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      {cart.cartItems.reduce((a, c) => a + c.qnty, 0)}
                     </Badge>
                   )}
                 </Link>
