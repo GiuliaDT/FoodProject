@@ -92,7 +92,7 @@ function Cart() {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>
-                    Subtotal ({cartItems.reduce((a, c) => a + c.qnty, 0)} items)
+                    Total ({cartItems.reduce((a, c) => a + c.qnty, 0)} products)
                     : {cartItems.reduce((a, c) => a + c.price * c.qnty, 0)} €
                   </h3>
                 </ListGroup.Item>

@@ -38,3 +38,6 @@ body {
 .img-thumbnail {
   height: 90px;
 }
+.singin-container {
+  max-width: 500px;
+}

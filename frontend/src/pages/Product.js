@@ -87,13 +87,20 @@ function Product() {
               <h1>{product.name}</h1>
             </ListGroup.Item>
             <ListGroup.Item>
-              <h3>Category:{product.category}</h3>
+              <h3>
+                <i class="fa-solid fa-utensils"></i> {product.category}
+              </h3>
             </ListGroup.Item>
             <ListGroup.Item>
-              <h3>Origin:{product.origin}</h3>
+              <h3>
+                <i class="fa-sharp fa-solid fa-location-dot"></i>{' '}
+                {product.origin}
+              </h3>
             </ListGroup.Item>
             <ListGroup.Item>
-              <h3>Price:{product.price}€</h3>
+              <h3>
+                <i class="fa-solid fa-tag"></i> {product.price}€
+              </h3>
             </ListGroup.Item>
           </ListGroup>
         </Col>
