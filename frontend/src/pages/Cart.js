@@ -104,7 +104,7 @@ function Cart() {
                       onClick={goToCheckOut}
                       disabled={cartItems.length === 0}
                     >
-                      Proceed to Checkout
+                      Place Your Order
                     </Button>
                   </div>
                 </ListGroup.Item>

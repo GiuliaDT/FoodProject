@@ -13,6 +13,10 @@ import { Store } from './Store';
 import { useContext } from 'react';
 import Cart from './pages/Cart';
 import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import Shipping from './pages/Shipping';
+import Payment from './pages/Payment';
+import ConfirmOrder from './pages/ConfirmOrder';
 
 function App() {
   const { state, dispatch: newDispatch } = useContext(Store);
@@ -23,6 +27,8 @@ function App() {
       type: 'SIGN_OUT',
     });
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('shippingAddress');
+    localStorage.removeItem('paymentMethod');
   };
   return (
     <BrowserRouter>
@@ -74,7 +80,11 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/shipping" element={<Shipping />} />
+              <Route path="/payment" element={<Payment />} />
               <Route path="/product/:slug" element={<Product />} />
+              <Route path="/confirmorder" element={<ConfirmOrder />} />
             </Routes>
           </Container>
         </main>
