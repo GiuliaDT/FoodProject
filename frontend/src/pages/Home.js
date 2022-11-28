@@ -45,7 +45,6 @@ function Home() {
 
   return (
     <div>
-      <h1> Best Seller</h1>
       <div className="products">
         {loading ? (
           <LoadSpinner />

@@ -62,7 +62,7 @@ function User() {
 
   return (
     <div className="container small-container">
-      <h1 className="my-3"> USer Profile</h1>
+      <h1 className="my-3"> User Profile</h1>
       <form onSubmit={submitChanges}>
         <Form.Group className="mb-3">
           <Form.Label>Name</Form.Label>
