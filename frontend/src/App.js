@@ -18,6 +18,8 @@ import Shipping from './pages/Shipping';
 import Payment from './pages/Payment';
 import ConfirmOrder from './pages/ConfirmOrder';
 import ProcessOrder from './pages/ProcessOrder';
+import OrderHistory from './pages/OrderHistory';
+import User from './pages/User';
 
 function App() {
   const { state, dispatch: newDispatch } = useContext(Store);
@@ -30,6 +32,7 @@ function App() {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
+    window.location.href = '/signin';
   };
   return (
     <BrowserRouter>
@@ -40,7 +43,7 @@ function App() {
               <LinkContainer to="/">
                 <Navbar.Brand>PlantyFood</Navbar.Brand>
               </LinkContainer>
-              <Nav className="me-auto">
+              <Nav className="me-auto w-100 justify-content-end">
                 <Link to="/cart" className="nav-link">
                   <i class="fa-solid fa-cart-shopping"></i>
                   {cart.cartItems.length > 0 && (
@@ -82,11 +85,13 @@ function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/profile" element={<User />} />
               <Route path="/shipping" element={<Shipping />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/product/:slug" element={<Product />} />
               <Route path="/confirmorder" element={<ConfirmOrder />} />
               <Route path="/order/:id" element={<ProcessOrder />} />
+              <Route path="/orderhistory" element={<OrderHistory />} />
             </Routes>
           </Container>
         </main>

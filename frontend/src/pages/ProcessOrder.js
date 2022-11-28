@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import LoadSpinner from '../components/LoadSpinner';
 import Alert from '../components/Alert';
+
 import { Store } from '../Store';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -28,10 +28,8 @@ function ProcessOrder() {
   const { id: orderId } = params;
   const navigate = useNavigate();
 
-  const [{ loading, error, order }, dispatch] = useReducer(reducer, {
-    loading: true,
+  const [{ order }, dispatch] = useReducer(reducer, {
     order: {},
-    error: '',
   });
   useEffect(() => {
     const getOrder = async () => {
@@ -53,17 +51,18 @@ function ProcessOrder() {
       getOrder();
     }
   }, [order, userInfo, orderId, navigate]);
-  return loading ? (
-    <LoadSpinner></LoadSpinner>
-  ) : error ? (
-    <Alert variant="danger">{error}</Alert>
-  ) : (
-    <div>
-      <h1 className="my-3"> You order reference number is # {orderId}</h1>
 
-      <h3> Thank you for shopping with us, come to visit us soon!</h3>
+  return (
+    <div>
+      <title>Thank you for shopping with us</title>
+      <h1>Your Order confirmation number is #{orderId}</h1>
+      Status{' '}
+      {order.isDelivered ? (
+        <Alert variant="success">Delivered at {order.deliveredAt}</Alert>
+      ) : (
+        <Alert variant="danger">Not Delivered</Alert>
+      )}
     </div>
   );
 }
-
 export default ProcessOrder;

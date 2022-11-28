@@ -1,6 +1,6 @@
 import express from 'express';
 import Order from '../models/orderModel.js';
-import { checkAuth } from '../utils.js';
+import { checkAuth, getAccessToken } from '../utils.js';
 import expressAsyncHandler from 'express-async-handler';
 
 const orderRouter = express.Router();
@@ -14,13 +14,21 @@ orderRouter.post(
       paymentMethod: req.body.paymentMethod,
       itemsPrice: req.body.itemsPrice,
       shippingPrice: req.body.shippingPrice,
-      taxPrice: req.body.taxPrice,
       totalPrice: req.body.totalPrice,
       user: req.user._id,
     });
 
     const order = await newOrder.save();
     res.status(201).send({ message: 'New Order Created', order });
+  })
+);
+
+orderRouter.get(
+  '/personal',
+  checkAuth,
+  expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find({ user: req.user._id });
+    res.send(orders);
   })
 );
 
@@ -36,4 +44,5 @@ orderRouter.get(
     }
   })
 );
+
 export default orderRouter;
