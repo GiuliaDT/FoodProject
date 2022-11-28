@@ -50,7 +50,7 @@ function Payment() {
           onChange={(e) => setSelectedPayment(e.target.value)}
         />
       </div>
-      {/* <div className="mb-3">
+      <div className="mb-3">
         <Form.Check
           type="radio"
           id="Credit Card"
@@ -59,7 +59,7 @@ function Payment() {
           checked={selectedPayment === 'Credit Card'}
           onChange={(e) => setSelectedPayment(e.target.value)}
         />
-      </div> */}
+      </div>
 
       <Button type="submit">Continue</Button>
     </Form>

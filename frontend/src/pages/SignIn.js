@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Axios from 'axios';
 import { Store } from '../Store';
+import { getError } from '../utils';
 
 function SignIn() {
   const navigate = useNavigate();
@@ -33,7 +34,9 @@ function SignIn() {
       });
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');
-    } catch {}
+    } catch (error) {
+      window.alert(getError(error));
+    }
   };
 
   useEffect(() => {

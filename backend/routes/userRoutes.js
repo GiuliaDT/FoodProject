@@ -23,7 +23,7 @@ userRouter.post(
         return;
       }
     }
-    res.status(401).send({ message: 'Wrong email or password. Acess denied' });
+    res.status(401).send({ message: 'Wrong email or password. Access denied' });
   })
 );
 
