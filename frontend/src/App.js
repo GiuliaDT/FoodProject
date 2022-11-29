@@ -20,7 +20,10 @@ import ConfirmOrder from './pages/ConfirmOrder';
 import ProcessOrder from './pages/ProcessOrder';
 import OrderHistory from './pages/OrderHistory';
 import User from './pages/User';
-
+import AdminDash from './pages/AdminDash';
+import RestrictedUser from './components/RestrictedUser';
+import RestrictedAdmin from './components/RestrictedAdmin';
+import ProductList from './pages/ProductList';
 function App() {
   const { state, dispatch: newDispatch } = useContext(Store);
   const { cart, userInfo } = state;
@@ -60,7 +63,6 @@ function App() {
                     <LinkContainer to="/orderhistory">
                       <NavDropdown.Item> History</NavDropdown.Item>
                     </LinkContainer>
-                    <NavDropdown.Divider />
                     <Link
                       className="dropdown-item"
                       to="#signout"
@@ -74,6 +76,22 @@ function App() {
                     Sign In
                   </Link>
                 )}
+                {userInfo && userInfo.isAdmin && (
+                  <NavDropdown title="Admin" id="admin-nav-dropdown">
+                    <LinkContainer to="/admin/dashboard">
+                      <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/admin/products">
+                      <NavDropdown.Item>Products</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/admin/orders">
+                      <NavDropdown.Item>Orders</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/admin/users">
+                      <NavDropdown.Item>Users</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
+                )}
               </Nav>
             </Container>
           </Navbar>
@@ -85,13 +103,51 @@ function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
-              <Route path="/profile" element={<User />} />
+
+              <Route
+                path="/profile"
+                element={
+                  <RestrictedUser>
+                    <User />
+                  </RestrictedUser>
+                }
+              ></Route>
               <Route path="/shipping" element={<Shipping />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/product/:slug" element={<Product />} />
               <Route path="/confirmorder" element={<ConfirmOrder />} />
-              <Route path="/order/:id" element={<ProcessOrder />} />
-              <Route path="/orderhistory" element={<OrderHistory />} />
+              <Route
+                path="/order/:id"
+                element={
+                  <RestrictedUser>
+                    <ProcessOrder />
+                  </RestrictedUser>
+                }
+              ></Route>
+              <Route
+                path="/orderhistory"
+                element={
+                  <RestrictedUser>
+                    <OrderHistory />
+                  </RestrictedUser>
+                }
+              ></Route>
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <RestrictedAdmin>
+                    <AdminDash />
+                  </RestrictedAdmin>
+                }
+              ></Route>
+              <Route
+                path="/admin/products"
+                element={
+                  <RestrictedAdmin>
+                    <ProductList />
+                  </RestrictedAdmin>
+                }
+              ></Route>
             </Routes>
           </Container>
         </main>

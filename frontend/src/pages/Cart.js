@@ -19,7 +19,7 @@ function Cart() {
   const updateCart = async (item, qnty) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.stock < qnty) {
-      window.alert('Product is cuurently out of stock');
+      window.alert('Product is currently out of stock');
       return;
     }
     newDispatch({
