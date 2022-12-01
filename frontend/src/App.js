@@ -1,29 +1,36 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Product from './pages/Product';
-import Navbar from 'react-bootstrap/Navbar';
-import Container from 'react-bootstrap/Container';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
+import { Store } from './Store';
+import { useContext } from 'react';
+import Home from './pages/Home';
+import Product from './pages/Products/Product';
+import Navbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Badge from 'react-bootstrap/Badge';
-import { Store } from './Store';
-import { useContext } from 'react';
-import Cart from './pages/Cart';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import Shipping from './pages/Shipping';
-import Payment from './pages/Payment';
-import ConfirmOrder from './pages/ConfirmOrder';
-import ProcessOrder from './pages/ProcessOrder';
-import OrderHistory from './pages/OrderHistory';
-import User from './pages/User';
-import AdminDash from './pages/AdminDash';
+import Cart from './pages/Orders/Cart';
+import SignIn from './pages/UsersAdmin/SignIn';
+import SignUp from './pages/UsersAdmin/SignUp';
+import Shipping from './pages/Orders/Shipping';
+import Payment from './pages/Orders/Payment';
+import ConfirmOrder from './pages/Orders/ConfirmOrder';
+import ProcessOrder from './pages/Orders/ProcessOrder';
+import OrderHistory from './pages/Orders/OrderHistory';
+import User from './pages/UsersAdmin/User';
+import AdminDash from './pages/UsersAdmin/AdminDash';
 import RestrictedUser from './components/RestrictedUser';
 import RestrictedAdmin from './components/RestrictedAdmin';
-import ProductList from './pages/ProductList';
+import ProductList from './pages/Products/ProductList';
+import OrderList from './pages/Orders/OrderList';
+import ProductEdit from './pages/Products/ProductEdit';
+import UserList from './pages/UsersAdmin/UserList';
+import UserEdit from './pages/UsersAdmin/UserEdit';
+import ProductCreate from './pages/Products/ProductCreate';
+import SearchResult from './pages/SearchResult';
+
 function App() {
   const { state, dispatch: newDispatch } = useContext(Store);
   const { cart, userInfo } = state;
@@ -101,6 +108,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/search" element={<SearchResult />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
 
@@ -145,6 +153,47 @@ function App() {
                 element={
                   <RestrictedAdmin>
                     <ProductList />
+                  </RestrictedAdmin>
+                }
+              ></Route>
+              <Route
+                path="/create"
+                element={
+                  <RestrictedAdmin>
+                    <ProductCreate />
+                  </RestrictedAdmin>
+                }
+              ></Route>
+              <Route
+                path="/admin/product/:id"
+                element={
+                  <RestrictedAdmin>
+                    <ProductEdit />
+                  </RestrictedAdmin>
+                }
+              ></Route>
+
+              <Route
+                path="/admin/orders"
+                element={
+                  <RestrictedAdmin>
+                    <OrderList />
+                  </RestrictedAdmin>
+                }
+              ></Route>
+              <Route
+                path="/admin/users"
+                element={
+                  <RestrictedAdmin>
+                    <UserList />
+                  </RestrictedAdmin>
+                }
+              ></Route>
+              <Route
+                path="/admin/user/:id"
+                element={
+                  <RestrictedAdmin>
+                    <UserEdit />
                   </RestrictedAdmin>
                 }
               ></Route>

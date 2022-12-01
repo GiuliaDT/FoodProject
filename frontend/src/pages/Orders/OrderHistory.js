@@ -1,11 +1,12 @@
 import React, { useEffect, useReducer, useContext } from 'react';
-import LoadSpinner from '../components/LoadSpinner';
-import Alert from '../components/Alert';
+import LoadSpinner from '../../components/LoadSpinner';
+import Alert from '../../components/Alert';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { getError } from '../utils';
-import { Store } from '../Store';
+import { getError } from '../../utils';
+import { Store } from '../../Store';
+import Searchbox from '../../components/Searchbox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -50,7 +51,8 @@ function OrderHistory() {
   }, [userInfo]);
   return (
     <div>
-      <title>Order History</title>
+      <title>Your Order History</title>
+      <Searchbox />
       {loading ? (
         <LoadSpinner></LoadSpinner>
       ) : error ? (

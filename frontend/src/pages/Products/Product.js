@@ -8,10 +8,10 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import LoadSpinner from '../components/LoadSpinner';
-import ErrorBox from '../components/Alert';
-import { getError } from '../utils';
-import { Store } from '../Store';
+import LoadSpinner from '../../components/LoadSpinner';
+import ErrorBox from '../../components/Alert';
+import { getError } from '../../utils';
+import { Store } from '../../Store';
 
 const reducer = (state, action) => {
   switch (action.type) {

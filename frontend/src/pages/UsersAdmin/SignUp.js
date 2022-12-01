@@ -4,10 +4,9 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Axios from 'axios';
-import { Store } from '../Store';
-import { getError } from '../utils';
+import { Store } from '../../Store';
 
-function SignIn() {
+function SignUp() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const redirectUrl = new URLSearchParams(search).get('redirect');
@@ -15,18 +14,25 @@ function SignIn() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [name, setName] = useState('');
-  // const [surname, setSurname] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
 
   const { state, dispatch: newDispatch } = useContext(Store);
   const { userInfo } = state;
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (password !== confirmPass) {
+      window.alert('Passwords do not match');
+    }
     try {
-      const { data } = await Axios.post('/api/users/signin', {
+      const { data } = await Axios.post('/api/users/signup', {
+        name,
+        surname,
         email,
         password,
+        confirmPass,
       });
       newDispatch({
         type: 'USER_SIGN_IN',
@@ -34,9 +40,7 @@ function SignIn() {
       });
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');
-    } catch (error) {
-      window.alert(getError(error));
-    }
+    } catch {}
   };
 
   useEffect(() => {
@@ -47,7 +51,7 @@ function SignIn() {
 
   return (
     <Container className="small-container">
-      <h1 className="my-3">Sign In</h1>
+      <h1 className="my-3">Sign Up</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
@@ -55,6 +59,22 @@ function SignIn() {
             type="email"
             required
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="name">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type="text"
+            required
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="surname">
+          <Form.Label>Surname</Form.Label>
+          <Form.Control
+            type="text"
+            required
+            onChange={(e) => setSurname(e.target.value)}
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="password">
@@ -65,16 +85,24 @@ function SignIn() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
+        <Form.Group className="mb-3" controlId="confirmPass">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            type="password"
+            required
+            onChange={(e) => setConfirmPass(e.target.value)}
+          />
+        </Form.Group>
         <div className="mb-3">
-          <Button type="submit">Sign In</Button>
+          <Button type="submit">Sign Up</Button>
         </div>
         <div className="mb-3">
-          New customer?{' '}
-          <Link to={`/signup?redirect=${redirect}`}>Create your account</Link>
+          Already have an account?{' '}
+          <Link to={`/signin?redirect=${redirect}`}>Log In</Link>
         </div>
       </Form>
     </Container>
   );
 }
 
-export default SignIn;
+export default SignUp;

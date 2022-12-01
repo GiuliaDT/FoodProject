@@ -6,6 +6,42 @@ import expressAsyncHandler from 'express-async-handler';
 
 const orderRouter = express.Router();
 
+orderRouter.get(
+  '/',
+  checkAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find().populate('user', 'name');
+    res.send(orders);
+  })
+);
+
+orderRouter.get(
+  '/search',
+  isAdmin,
+  checkAuth,
+  expressAsyncHandler(async (req, res) => {
+    const { query } = req;
+    const searchQuery = query.query || '';
+    const queryFilter =
+      searchQuery && searchQuery !== 'all'
+        ? {
+            name: {
+              $regex: searchQuery,
+              $options: 'i',
+            },
+          }
+        : {};
+    const orders = await Order.find({
+      ...queryFilter,
+    });
+    res.send({
+      orders,
+      countOrders,
+    });
+  })
+);
+
 orderRouter.post(
   '/',
   checkAuth,
@@ -60,9 +96,26 @@ orderRouter.get(
   })
 );
 
+orderRouter.put(
+  '/:id/deliver',
+  checkAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
+      await order.save();
+      res.send({ message: 'Order Delivered' });
+    } else {
+      res.status(404).send({ message: 'Order Not Found' });
+    }
+  })
+);
+
 orderRouter.get(
   '/:id',
-  checkAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {
@@ -73,4 +126,18 @@ orderRouter.get(
   })
 );
 
+orderRouter.delete(
+  '/:id',
+  checkAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      await order.remove();
+      res.status(200).send({ message: 'Order deleted' });
+    } else {
+      res.status(404).send({ message: 'Order not Found' });
+    }
+  })
+);
 export default orderRouter;

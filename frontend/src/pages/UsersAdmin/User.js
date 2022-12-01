@@ -2,8 +2,8 @@ import { useContext, useReducer, useState } from 'react';
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/esm/Button';
-import { getError } from '../utils';
-import { Store } from '../Store';
+import { getError } from '../../utils';
+import { Store } from '../../Store';
 import axios from 'axios';
 
 const reducer = (state, action) => {

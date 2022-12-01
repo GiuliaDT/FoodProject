@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import axios from 'axios';
-import { Store } from '../Store';
+import { Store } from '../../Store';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Alert from '../components/Alert';
+import Alert from '../../components/Alert';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';

@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useContext, useEffect, useReducer } from 'react';
 import React from 'react';
-import LoadSpinner from '../components/LoadSpinner';
-import Alert from '../components/Alert';
-import { Store } from '../Store';
-import { getError } from '../utils';
+import LoadSpinner from '../../components/LoadSpinner';
+import Alert from '../../components/Alert';
+import { Store } from '../../Store';
+import { getError } from '../../utils';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
