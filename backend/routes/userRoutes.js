@@ -2,13 +2,13 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import expressAsyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
-import { checkAuth, getAccessToken, isAdmin } from '../utils.js';
+import { isAuth, getAccessToken, isAdmin } from '../utils.js';
 
 const userRouter = express.Router();
 
 userRouter.get(
   '/',
-  checkAuth,
+  isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const users = await User.find({});
@@ -18,7 +18,7 @@ userRouter.get(
 
 userRouter.get(
   '/:id',
-  checkAuth,
+  isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
@@ -74,7 +74,7 @@ userRouter.post(
 
 userRouter.put(
   '/profile',
-  checkAuth,
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
     if (user) {
@@ -101,7 +101,7 @@ userRouter.put(
 
 userRouter.put(
   '/:id',
-  checkAuth,
+  isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
@@ -120,12 +120,12 @@ userRouter.put(
 
 userRouter.delete(
   '/:id',
-  checkAuth,
+  isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
     if (user) {
-      if (user.email === 'admin@test.com') {
+      if (user.email === 'adminadmin@test.com') {
         res.status(400).send({ message: 'Can Not Delete Admin User' });
         return;
       }

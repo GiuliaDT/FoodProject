@@ -1,18 +1,18 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
-import { checkAuth, isAdmin } from '../utils.js';
+import { isAuth, isAdmin } from '../utils.js';
 
 const productRouter = express.Router();
 
 productRouter.get('/', async (req, res) => {
   const products = await Product.find();
-  res.send(products);
+  res.status(200).send(products);
 });
 
 productRouter.post(
-  '/create',
-  checkAuth,
+  '/',
+  isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const newProduct = new Product({
@@ -24,13 +24,13 @@ productRouter.post(
       stock: req.body.stock,
     });
     const product = await newProduct.save();
-    res.send({ message: 'Product Created', product });
+    res.status(201)._writesend({ message: 'Product Created', product });
   })
 );
 
 productRouter.put(
   '/:id',
-  checkAuth,
+  isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
@@ -43,7 +43,7 @@ productRouter.put(
       product.stock = req.body.stock;
       product.origin = req.body.origin;
       await product.save();
-      res.send({ message: 'Product Updated' });
+      res.status(200).send({ message: 'Product Updated' });
     } else {
       res.status(404).send({ message: 'Product Not Found' });
     }
@@ -52,13 +52,13 @@ productRouter.put(
 
 productRouter.delete(
   '/:id',
-  checkAuth,
+  isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
       await product.remove();
-      res.send({ message: 'Product Deleted' });
+      res.status(200).send({ message: 'Product Deleted' });
     } else {
       res.status(404).send({ message: 'Product Not Found' });
     }
@@ -67,7 +67,7 @@ productRouter.delete(
 
 productRouter.get(
   '/admin',
-  checkAuth,
+  isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const products = await Product.find();
@@ -86,7 +86,7 @@ productRouter.get('/slug/:slug', async (req, res) => {
 productRouter.get('/:id', async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (product) {
-    res.send(product);
+    res.status(200).send(product);
   } else {
     res.status(404).send({ message: 'Product Not Found' });
   }

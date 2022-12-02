@@ -1,50 +1,25 @@
 import express from 'express';
 import Order from '../models/orderModel.js';
 import User from '../models/userModel.js';
-import { checkAuth, getAccessToken, isAdmin } from '../utils.js';
+import Product from '../models/productModel.js';
+import { isAuth, isAdmin } from '../utils.js';
 import expressAsyncHandler from 'express-async-handler';
 
 const orderRouter = express.Router();
 
 orderRouter.get(
   '/',
-  checkAuth,
+  isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const orders = await Order.find().populate('user', 'name');
-    res.send(orders);
-  })
-);
-
-orderRouter.get(
-  '/search',
-  isAdmin,
-  checkAuth,
-  expressAsyncHandler(async (req, res) => {
-    const { query } = req;
-    const searchQuery = query.query || '';
-    const queryFilter =
-      searchQuery && searchQuery !== 'all'
-        ? {
-            name: {
-              $regex: searchQuery,
-              $options: 'i',
-            },
-          }
-        : {};
-    const orders = await Order.find({
-      ...queryFilter,
-    });
-    res.send({
-      orders,
-      countOrders,
-    });
+    res.status(200).send(orders);
   })
 );
 
 orderRouter.post(
   '/',
-  checkAuth,
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const newOrder = new Order({
       orderItems: req.body.orderItems.map((x) => ({ ...x, product: x._id })),
@@ -63,7 +38,7 @@ orderRouter.post(
 
 orderRouter.get(
   '/summary',
-  checkAuth,
+  isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const orders = await Order.aggregate([
@@ -89,27 +64,10 @@ orderRouter.get(
 
 orderRouter.get(
   '/personal',
-  checkAuth,
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id });
-    res.send(orders);
-  })
-);
-
-orderRouter.put(
-  '/:id/deliver',
-  checkAuth,
-  isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
-    if (order) {
-      order.isDelivered = true;
-      order.deliveredAt = Date.now();
-      await order.save();
-      res.send({ message: 'Order Delivered' });
-    } else {
-      res.status(404).send({ message: 'Order Not Found' });
-    }
+    res.status(200).send(orders);
   })
 );
 
@@ -126,9 +84,52 @@ orderRouter.get(
   })
 );
 
+orderRouter.put(
+  '/:id/deliver',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
+      await order.save();
+      res.send({ message: 'Order Delivered' });
+    } else {
+      res.status(404).send({ message: 'Order Not Found' });
+    }
+  })
+);
+
+orderRouter.get(
+  '/search',
+  isAuth,
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const { query } = req;
+    const searchQuery = query.query || '';
+    const queryFilter =
+      searchQuery && searchQuery !== 'all'
+        ? {
+            name: {
+              $regex: searchQuery,
+              $options: 'i',
+            },
+          }
+        : {};
+    const orders = await Order.find({
+      ...queryFilter,
+    });
+    res.send({
+      orders,
+      countOrders,
+    });
+  })
+);
+
 orderRouter.delete(
   '/:id',
-  checkAuth,
+  isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);

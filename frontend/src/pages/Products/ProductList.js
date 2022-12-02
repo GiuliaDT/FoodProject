@@ -52,13 +52,11 @@ const reducer = (state, action) => {
 };
 
 export default function ProductList() {
-  const [
-    { loading, error, products, loadingCreate, loadingDelete, successDelete },
-    dispatch,
-  ] = useReducer(reducer, {
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, products, loadingDelete, successDelete }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: '',
+    });
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -141,8 +139,8 @@ export default function ProductList() {
         </Col>
       </Row>
 
-      {loadingCreate && <LoadSpinner></LoadSpinner>}
-      {loadingDelete && <LoadSpinner></LoadSpinner>}
+      {/* {loadingCreate && <LoadSpinner></LoadSpinner>} */}
+      {loadingDelete}
       {loading ? (
         <LoadSpinner></LoadSpinner>
       ) : error ? (
