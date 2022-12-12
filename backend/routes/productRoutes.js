@@ -24,7 +24,7 @@ productRouter.post(
       stock: req.body.stock,
     });
     const product = await newProduct.save();
-    res.status(201)._writesend({ message: 'Product Created', product });
+    res.status(201).send({ message: 'Product Created', product });
   })
 );
 
@@ -55,7 +55,8 @@ productRouter.delete(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id);
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
     if (product) {
       await product.remove();
       res.status(200).send({ message: 'Product Deleted' });

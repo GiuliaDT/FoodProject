@@ -58,6 +58,7 @@ orderRouter.get(
         },
       },
     ]);
+
     res.send({ users, orders });
   })
 );
@@ -73,7 +74,7 @@ orderRouter.get(
 
 orderRouter.get(
   '/:id',
-  isAdmin,
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {

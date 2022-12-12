@@ -75,9 +75,9 @@ function UserList() {
         await axios.delete(`/api/users/${user._id}`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        window.alert('user deleted successfully');
+        window.alert('User deleted successfully');
         dispatch({ type: 'DELETE_SUCCESS' });
-      } catch (error) {
+      } catch (err) {
         window.alert(getError(error));
         dispatch({
           type: 'DELETE_FAIL',
@@ -116,16 +116,16 @@ function UserList() {
                 <td>{user.isAdmin ? 'YES' : 'NO'}</td>
                 <td>
                   <Button
+                    variant="outline-warning"
                     type="button"
-                    variant="light"
                     onClick={() => navigate(`/admin/user/${user._id}`)}
                   >
                     Edit
                   </Button>
                   &nbsp;
                   <Button
+                    variant="outline-danger"
                     type="button"
-                    variant="light"
                     onClick={() => deleteHandler(user)}
                   >
                     Delete

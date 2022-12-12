@@ -61,40 +61,42 @@ function AdminDash() {
         <div>
           <Row>
             <Col md={4}>
-              <Card>
+              <Card className="card border-primary mb-3">
                 <Card.Body>
                   <Card.Title>
                     {summary.users && summary.users[0]
                       ? summary.users[0].numUsers
                       : 0}{' '}
-                    subsribed
+                    <strong>Subscribed</strong>
                   </Card.Title>
                   <Card.Text>Users</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
+
             <Col md={4}>
-              <Card>
+              <Card className="card border-info mb-3">
                 <Card.Body>
                   <Card.Title>
                     {summary.orders && summary.users[0]
                       ? summary.orders[0].numOrders
                       : 0}{' '}
+                    <strong>Placed</strong>
                   </Card.Title>
-                  <Card.Text>Orders </Card.Text>
+                  <Card.Text> Orders </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
             <Col md={4}>
-              <Card>
+              <Card className="card border-success mb-3">
                 <Card.Body>
                   <Card.Title>
                     {summary.orders && summary.users[0]
                       ? summary.orders[0].totalSales.toFixed(2)
                       : 0}{' '}
-                    €
+                    € <strong>Total</strong>
                   </Card.Title>
-                  <Card.Text>Total Sales </Card.Text>
+                  <Card.Text>Revenue </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -104,5 +106,4 @@ function AdminDash() {
     </div>
   );
 }
-
 export default AdminDash;

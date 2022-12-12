@@ -23,15 +23,6 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
-    // case 'CREATE_REQUEST':
-    //   return { ...state, loadingCreate: true };
-    // case 'CREATE_SUCCESS':
-    //   return {
-    //     ...state,
-    //     loadingCreate: false,
-    //   };
-    // case 'CREATE_FAIL':
-    //   return { ...state, loadingCreate: false };
     case 'DELETE_REQUEST':
       return { ...state, loadingDelete: true, successDelete: false };
     case 'DELETE_SUCCESS':
@@ -45,37 +36,34 @@ const reducer = (state, action) => {
 
     case 'DELETE_RESET':
       return { ...state, loadingDelete: false, successDelete: false };
-
     default:
       return state;
   }
 };
 
 export default function ProductList() {
+  const navigate = useNavigate();
+
   const [{ loading, error, products, loadingDelete, successDelete }, dispatch] =
     useReducer(reducer, {
       loading: true,
       error: '',
     });
-  const navigate = useNavigate();
+
   const { state } = useContext(Store);
   const { userInfo } = state;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get('/api/products/admin', {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
 
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
-      } catch (err) {
-        // dispatch({
-        //   type: 'FETCH_FAIL',
-        //   payload: getError(err),
-        // });
-      }
+      } catch (err) {}
     };
-    fetchData();
     if (successDelete) {
       dispatch({ type: 'DELETE_RESET' });
     } else {
@@ -83,28 +71,10 @@ export default function ProductList() {
     }
   }, [userInfo, successDelete]);
 
-  // const createHandler = async () => {
-  //   if (window.confirm('Are you sure to create a new item?')) {
-  //     try {
-  //       dispatch({ type: 'CREATE_REQUEST' });
-  //       const { data } = await axios.post('/api/product', {
-  //         headers: { Authorization: `Bearer ${userInfo.token}` },
-  //       });
-  //       window.alert('product created successfully');
-  //       dispatch({ type: 'CREATE_SUCCESS' });
-  //       navigate(`/admin/products/${data.product._id}`);
-  //       console.log(data);
-  //     } catch (err) {
-  //       window.alert(getError(error));
-  //       dispatch({
-  //         type: 'CREATE_FAIL',
-  //       });
-  //     }
-  //   }
-  // };
   const deleteHandler = async (productId) => {
-    if (window.confirm('Are you sure you want to remove this item? ')) {
+    if (window.confirm('Are you sure to delete this item?')) {
       try {
+        dispatch({ type: 'DELETE_REQUEST' });
         await axios.delete(`/api/products/${productId}`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
@@ -131,15 +101,10 @@ export default function ProductList() {
             <Link to="/create" className="btn btn-outline-info mx-1 mt-5 mb-3">
               Create
             </Link>
-            {/* <Button type="button" onClick={createHandler}>
-              {' '}
-              Create Product
-            </Button> */}
           </div>
         </Col>
       </Row>
 
-      {/* {loadingCreate && <LoadSpinner></LoadSpinner>} */}
       {loadingDelete}
       {loading ? (
         <LoadSpinner></LoadSpinner>
@@ -170,7 +135,7 @@ export default function ProductList() {
                   <td> {products[item].stock} </td>
                   <td>
                     <Button
-                      variant="light"
+                      variant="outline-primary"
                       type="button"
                       onClick={() =>
                         navigate(`/admin/product/${products[item]._id}`)
@@ -179,8 +144,9 @@ export default function ProductList() {
                       {' '}
                       Edit
                     </Button>
+                    &nbsp;
                     <Button
-                      variant="light"
+                      variant="outline-danger"
                       type="button"
                       onClick={() => deleteHandler(products[item]._id)}
                     >

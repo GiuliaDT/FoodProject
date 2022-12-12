@@ -84,7 +84,7 @@ function App() {
                   </Link>
                 )}
                 {userInfo && userInfo.isAdmin && (
-                  <NavDropdown title="Admin" id="admin-nav-dropdown">
+                  <NavDropdown title="Hello Admin" id="admin-nav-dropdown">
                     <LinkContainer to="/admin/dashboard">
                       <NavDropdown.Item>Dashboard</NavDropdown.Item>
                     </LinkContainer>

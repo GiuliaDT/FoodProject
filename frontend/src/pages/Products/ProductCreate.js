@@ -30,6 +30,7 @@ function ProductCreate() {
     error: '',
   });
   const [name, setName] = useState('');
+  const [slug, setSlug] = useState('');
   const [price, setPrice] = useState('');
   const [origin, setOrigin] = useState('');
   const [stock, setStock] = useState('');
@@ -48,6 +49,7 @@ function ProductCreate() {
           {
             price,
             name,
+            slug,
             stock,
             origin,
             category,
@@ -59,6 +61,7 @@ function ProductCreate() {
         console.log(data);
         window.alert('product created successfully');
         dispatch({ type: 'CREATE_SUCCESS' });
+        navigate(`/admin/products`);
       } catch (err) {
         window.alert(getError(err));
         dispatch({
@@ -90,6 +93,14 @@ function ProductCreate() {
               onChange={(e) => setCategory(e.target.value)}
             />
           </Form.Group>
+          <Form.Group className="mb-3" controlId="slug">
+            <Form.Label>Slug</Form.Label>
+            <Form.Control
+              type="text"
+              required
+              onChange={(e) => setSlug(e.target.value)}
+            />
+          </Form.Group>
           <Form.Group className="mb-3" controlId="price">
             <Form.Label>price</Form.Label>
             <Form.Control
@@ -116,7 +127,9 @@ function ProductCreate() {
           </Form.Group>
           {loadingCreate}
           <div className="mb-3">
-            <Button type="submit">Create</Button>
+            <Button type="submit" variant="outline-success">
+              Store New Item
+            </Button>
           </div>
         </Form>
       </Container>

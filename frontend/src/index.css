@@ -41,3 +41,6 @@ body {
 .singin-container {
   max-width: 500px;
 }
+.checked {
+  color: orange;
+}

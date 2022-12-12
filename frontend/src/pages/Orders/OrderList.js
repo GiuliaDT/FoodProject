@@ -52,6 +52,7 @@ function OrderList() {
         const { data } = await axios.get(`/api/orders`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
+        console.log(data);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
@@ -89,7 +90,7 @@ function OrderList() {
     <div>
       <h1>Orders</h1>
       <Searchbox />
-      {loadingDelete && <LoadSpinner></LoadSpinner>}
+      {loadingDelete}
       {loading ? (
         <LoadSpinner></LoadSpinner>
       ) : error ? (
@@ -114,7 +115,11 @@ function OrderList() {
                 <td>{order.user ? order.user.name : 'User was deleted'}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice.toFixed(2)}</td>
-                <td>{order.orderItems.name}</td>
+                <td>
+                  {order.orderItems.map((item) => (
+                    <td>{item.name}</td>
+                  ))}
+                </td>
 
                 <td>
                   {order.isDelivered
@@ -123,8 +128,8 @@ function OrderList() {
                 </td>
                 <td>
                   <Button
+                    variant="outline-primary"
                     type="button"
-                    variant="light"
                     onClick={() => {
                       navigate(`/order/${order._id}`);
                     }}
@@ -134,7 +139,7 @@ function OrderList() {
                   &nbsp;
                   <Button
                     type="button"
-                    variant="light"
+                    variant="outline-danger"
                     onClick={() => deleteHandler(order)}
                   >
                     Delete

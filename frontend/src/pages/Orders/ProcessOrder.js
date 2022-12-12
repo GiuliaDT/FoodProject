@@ -6,6 +6,11 @@ import axios from 'axios';
 import { getError } from '../../utils';
 import Button from 'react-bootstrap/Button';
 import LoadSpinner from '../../components/LoadSpinner';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -93,24 +98,76 @@ function ProcessOrder() {
     <Alert variant="danger">{error}</Alert>
   ) : (
     <div>
-      <title>Thank you for shopping with us</title>
-      <h1>Your Order confirmation number is #{orderId}</h1>
-      <h2>
-        {' '}
-        You order will be shipped in 2 working days. You can chek the status
-        here
-      </h2>
-      {order.isDelivered ? (
-        <Alert variant="success">Delivered at {order.deliveredAt}</Alert>
-      ) : (
-        <Alert variant="danger">Not Delivered</Alert>
-      )}
-      <h3> Come to visit us soon! </h3>
+      <title>Order {orderId}</title>
+      <Row>
+        <Col md={12}>
+          <Card className="mb-3">
+            <Card.Body>
+              <Card.Title>Shipping</Card.Title>
+              <Card.Text>
+                <strong>Name:</strong> {order.shippingAddress.fullName} <br />
+                <strong>Address: </strong> {order.shippingAddress.address},
+                {order.shippingAddress.city}, {order.shippingAddress.postalCode}
+                ,{order.shippingAddress.country}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+          <Card className="mb-3">
+            <Card.Body>
+              <Card.Title>Items</Card.Title>
+              <ListGroup variant="flush">
+                {order.orderItems.map((item) => (
+                  <ListGroup.Item key={item._id}>
+                    <Row className="align-items-center">
+                      <Col md={3}>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="img-fluid rounded img-thumbnail"
+                        ></img>{' '}
+                        <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                      </Col>
+                      <Col md={3}>Unit Price {item.price}€</Col>
+                      <Col md={3}>
+                        <span className="fa fa-star checked"></span>
+                        <span className="fa fa-star checked"></span>
+                        <span className="fa fa-star checked"></span>
+                        <span className="fa fa-star"></span>
+                        <span className="fa fa-star"></span>{' '}
+                        <Button variant="outline-warning" type="button">
+                          Review Products
+                        </Button>
+                      </Col>
+                      <Col md={3}>
+                        {order.isDelivered ? (
+                          <Alert variant="success">
+                            Delivered at {order.deliveredAt}
+                          </Alert>
+                        ) : (
+                          <Alert variant="warning">Not Delivered</Alert>
+                        )}{' '}
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
       {userInfo.isAdmin && !order.isDelivered && (
         <div>
           {loadingDeliver && <LoadSpinner></LoadSpinner>}
-
-          <Button type="button" onClick={deliverOrderHandler}>
+          <h4>
+            Order number #{orderId} has not been shipped yet. Please set the
+            state as delivered. A confirmation e-mail will be sent to{' '}
+            {userInfo.name}{' '}
+          </h4>
+          <Button
+            variant="outline-success"
+            type="button"
+            onClick={deliverOrderHandler}
+          >
             Deliver Order
           </Button>
         </div>
